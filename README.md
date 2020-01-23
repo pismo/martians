@@ -1,7 +1,5 @@
 
-# Pismo Martian Proxies
-
-[Martian](https://github.com/google/martian) custom HTTP/S proxies.
+# [Martian](https://github.com/google/martian) custom HTTP/S proxies.
 
 ## JWT Claims
 
