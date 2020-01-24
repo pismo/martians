@@ -9,7 +9,7 @@ Example configuration that injects an `X-Martian` header with the value of the J
 
 ```
 {
-  "header.Modifier": {
+  "header.JwtClaims": {
     "scope": ["request"],
     "header": "X-Martian",
     "claim": "pismo_martian"
