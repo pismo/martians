@@ -1,0 +1,16 @@
+image: docker:latest
+
+services:
+- docker:dind
+
+stages:
+  - test 
+
+martians:
+  stage: test 
+  image: 
+    name: golang 
+    entrypoint: [""]
+  script:
+    - go test ./... -v 
+
