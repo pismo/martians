@@ -1,5 +1,5 @@
 
-# [Martian](https://github.com/google/martian) custom HTTP/S proxies.
+# [Martian](https://github.com/google/martian) HTTP/S proxies.
 
 [![pipeline status](https://gitlab.com/pismo/martians/badges/master/pipeline.svg)](https://gitlab.com/pismo/martians/commits/master)
 
