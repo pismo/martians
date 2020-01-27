@@ -28,11 +28,6 @@ type jwtClaimModifierJSON struct {
 	Scope  []parse.ModifierType `json:"scope"`
 }
 
-type CustomClaims struct {
-	Uid string `json:"uid"`
-	jwt.Claims
-}
-
 // ModifyRequest modifies the header of the request with the given JWT claim.
 // This is not an Authentication filter, it does not validates any of the data,
 // tokens, signatures, or anything. Only propagates context from the token,
@@ -43,12 +38,26 @@ func (m *jwtClaimModifier) ModifyRequest(req *http.Request) error {
 
 	h := proxyutil.RequestHeader(req)
 
-	splitHeader := strings.Split(h.Get("Authorization"), "Bearer")
+	header := h.Get("Authorization")
+
+	claims, err := parseAuthorization(header)
+
+	if err != nil {
+		log.Debugf("header: jwtClaimModifier.ModifyRequest %s, error: %v", req.URL, err.Error())
+		return nil
+	}
+
+	h.Set(m.header, fmt.Sprintf("%v", claims[m.claim]))
+
+	return nil
+}
+
+func parseAuthorization(header string) (claims map[string]interface{}, err error) {
+
+	splitHeader := strings.Split(header, "Bearer")
 
 	if len(splitHeader) != 2 {
-		return fmt.Errorf(`header: jwtClaimModifier.ModifyRequest %s, 
-			not a bearer token in Authorization header`,
-			req.URL)
+		return nil, fmt.Errorf("Not a bearer token in Authorization header")
 	}
 
 	tokenBase64 := splitHeader[1]
@@ -56,24 +65,18 @@ func (m *jwtClaimModifier) ModifyRequest(req *http.Request) error {
 	token, err := jwt.ParseSigned(tokenBase64)
 
 	if err != nil {
-		return fmt.Errorf(`header: jwtClaimModifier.ModifyRequest %s, 
-			failed to parse JWT: %v`,
-			req.URL, err.Error())
+		return nil, fmt.Errorf("Failed to parse JWT: %v", err.Error())
 	}
 
-	claims := make(map[string]interface{})
+	c := make(map[string]interface{})
 	// Signature validation should be done in an earlier phase of the request.
-	err = token.UnsafeClaimsWithoutVerification(&claims)
+	err = token.UnsafeClaimsWithoutVerification(&c)
 
 	if err != nil {
-		return fmt.Errorf(`header: jwtClaimModifier.ModifyRequest %s, 
-			failed to parse JWT claims: %v`,
-			req.URL, err.Error())
+		return nil, fmt.Errorf("Failed to parse JWT claims: %v", err.Error())
 	}
 
-	h.Set(m.header, fmt.Sprintf("%v", claims[m.claim]))
-
-	return nil
+	return c, nil
 }
 
 // NewJwtClaimModifier returns a request modifier that will set the configured
