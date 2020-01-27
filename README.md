@@ -1,6 +1,8 @@
 
 # [Martian](https://github.com/google/martian) custom HTTP/S proxies.
 
+[![pipeline status](https://gitlab.com/pismo/martians/badges/master/pipeline.svg)](https://gitlab.com/pismo/martians/commits/master)
+
 ## JWT Claims
 
 The `header.JwtClaims` injects a JWT claim in the request as a HTTP header.
