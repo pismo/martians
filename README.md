@@ -1,7 +1,5 @@
 
-# Pismo Martian Proxies
-
-[Martian](https://github.com/google/martian) custom HTTP/S proxies.
+# [Martian](https://github.com/google/martian) custom HTTP/S proxies.
 
 ## JWT Claims
 
@@ -11,7 +9,7 @@ Example configuration that injects an `X-Martian` header with the value of the J
 
 ```
 {
-  "header.Modifier": {
+  "header.JwtClaims": {
     "scope": ["request"],
     "header": "X-Martian",
     "claim": "pismo_martian"
