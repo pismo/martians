@@ -30,7 +30,7 @@ func NewMatcher(claim, resource string) *Matcher {
 // the request uri matches the jwt claim
 func (m *Matcher) MatchRequest(req *http.Request) bool {
 	log.Debugf("header: jwt.Filter%s, claim: %s, resource: %s",
-		req.URL, v.claim, v.resource)
+		req.URL, m.claim, m.resource)
 
 	h := proxyutil.RequestHeader(req)
 
@@ -42,7 +42,7 @@ func (m *Matcher) MatchRequest(req *http.Request) bool {
 		return false
 	}
 
-	err = validate(v.resource, fmt.Sprintf("%v", claims[v.claim]), req.URL.String())
+	err = match(m.resource, fmt.Sprintf("%v", claims[m.claim]), req.URL.String())
 
 	if err != nil {
 		log.Debugf("jwt claim validation failed: %s", err.Error())
@@ -53,17 +53,10 @@ func (m *Matcher) MatchRequest(req *http.Request) bool {
 }
 
 // MatchResponse evaluates a response and returns whether or not the response
-// contains a cookie that matches the provided name and value.
-//func (m *Matcher) MatchResponse(res *http.Response) bool {
-//	for _, c := range res.Cookies() {
-//		if m.match(c) {
-//			log.Debugf("cookie.MatchResponse: %s, matched: cookie: %s", res.Request.URL, c)
-//			return true
-//		}
-//	}
-//
-//	return false
-//}
+// contains a uri matching the jwt claim.
+func (m *Matcher) MatchResponse(res *http.Response) bool {
+	return false
+}
 
 func match(resource string, value string, rawurl string) error {
 

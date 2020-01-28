@@ -1,4 +1,4 @@
-package header
+package jwt
 
 import (
 	"encoding/json"
