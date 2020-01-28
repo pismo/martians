@@ -14,7 +14,7 @@ import (
 )
 
 func init() {
-	parse.Register("header.JwtClaim", jwtClaimModifierFromJSON)
+	parse.Register("jwt.Modifier", jwtClaimModifierFromJSON)
 }
 
 type jwtClaimModifier struct {

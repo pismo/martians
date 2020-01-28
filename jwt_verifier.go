@@ -16,7 +16,7 @@ import (
 )
 
 func init() {
-	parse.Register("uri.JwtVerifier", verifierFromJSON)
+	parse.Register("jwt.Verifier", verifierFromJSON)
 }
 
 const errFormat = "jwt claim(%s) uri verification failed: got %s"
