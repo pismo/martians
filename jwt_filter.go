@@ -3,9 +3,9 @@ package jwt
 import (
 	"encoding/json"
 
-	"github.com/google/martian/v3/filter"
+	"github.com/google/martian/filter"
+	"github.com/google/martian/parse"
 	"github.com/google/martian/v3/log"
-	"github.com/google/martian/v3/parse"
 )
 
 //var noop = martian.Noop("jwt.Filter")
