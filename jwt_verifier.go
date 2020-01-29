@@ -4,9 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"net/url"
-	"regexp"
-	"strings"
 
 	"github.com/google/martian"
 	"github.com/google/martian/parse"
@@ -60,54 +57,11 @@ func (v *Verifier) ModifyRequest(req *http.Request) error {
 		return fmt.Errorf("header: jwtClaimModifier.ModifyRequest %s, error: %v", req.URL, err.Error())
 	}
 
-	err = validate(v.resource, fmt.Sprintf("%v", claims[v.claim]), req.URL.String())
+	err = match(v.resource, fmt.Sprintf("%v", claims[v.claim]), req.URL.String())
 
 	if err != nil {
 		log.Debugf("jwt claim validation failed: %s", err.Error())
 		v.err.Add(fmt.Errorf(errFormat, claims[v.claim], req.URL))
-	}
-
-	return nil
-}
-
-func validate(resource string, value string, rawurl string) (err error) {
-
-	regex := fmt.Sprintf("%s%s", resource, `/([^/\r\n]+)`)
-
-	u, err := url.Parse(rawurl)
-	if err != nil {
-		return fmt.Errorf("could not parse URI: %s", err.Error())
-	}
-
-	if value == "" {
-		return fmt.Errorf("missing resource value")
-	}
-
-	uri := u.RequestURI()
-
-	// ¯\_(ツ)_/¯
-	// Removing the resource if it is the prefix of the URI:
-	// `/accounts/v1/accounts/10` becomes `/v1/accounts/10`,
-	resourceIndex := strings.HasPrefix(uri, fmt.Sprintf("/%s/v", resource))
-	if resourceIndex {
-		uri = uri[len(resource):]
-	}
-
-	re := regexp.MustCompile(regex)
-	for {
-
-		pos := re.FindStringSubmatchIndex(uri)
-		if len(pos) < 4 {
-			break
-		}
-
-		uriValue := string(uri[pos[2]:pos[3]])
-
-		uri = uri[pos[3]:]
-
-		if uriValue != value {
-			return fmt.Errorf("resource(%s) id mismatch, uri: %s, jwt claim: %s", resource, uriValue, value)
-		}
 	}
 
 	return nil

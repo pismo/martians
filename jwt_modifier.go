@@ -33,8 +33,7 @@ type jwtClaimModifierJSON struct {
 // tokens, signatures, or anything. Only propagates context from the token,
 // withou verifying it.
 func (m *jwtClaimModifier) ModifyRequest(req *http.Request) error {
-	log.Debugf("header: jwtClaimModifier.ModifyRequest %s, claim: %s, header: %s",
-		req.URL, m.claim, m.header)
+	log.Debugf("header: jwtClaimModifier.ModifyRequest %s, claim: %s, header: %s", req.URL, m.claim, m.header)
 
 	h := proxyutil.RequestHeader(req)
 

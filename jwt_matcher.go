@@ -29,8 +29,7 @@ func NewMatcher(claim, resource string) *Matcher {
 // MatchRequest evaluates a request and returns whether or not
 // the request uri matches the jwt claim
 func (m *Matcher) MatchRequest(req *http.Request) bool {
-	log.Debugf("header: jwt.Filter%s, claim: %s, resource: %s",
-		req.URL, m.claim, m.resource)
+	log.Debugf("header: jwt.Filter%s, claim: %s, resource: %s", req.URL, m.claim, m.resource)
 
 	h := proxyutil.RequestHeader(req)
 
@@ -39,6 +38,7 @@ func (m *Matcher) MatchRequest(req *http.Request) bool {
 	claims, err := parseAuthorization(header)
 
 	if err != nil {
+		log.Debugf("jwt parsing failed: %s", err.Error())
 		return false
 	}
 
