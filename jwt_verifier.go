@@ -53,15 +53,14 @@ func (v *Verifier) ModifyRequest(req *http.Request) error {
 	claims, err := parseAuthorization(header)
 
 	if err != nil {
-		//TODO: set statuscode 401 instead of returning error
 		return fmt.Errorf("header: jwtClaimModifier.ModifyRequest %s, error: %v", req.URL, err.Error())
 	}
 
 	err = match(v.resource, fmt.Sprintf("%v", claims[v.claim]), req.URL.String())
 
 	if err != nil {
-		log.Debugf("jwt claim validation failed: %s", err.Error())
-		v.err.Add(fmt.Errorf(errFormat, claims[v.claim], req.URL))
+		return fmt.Errorf("jwt claim validation failed: %s", err.Error())
+		//v.err.Add(fmt.Errorf(errFormat, claims[v.claim], req.URL))
 	}
 
 	return nil

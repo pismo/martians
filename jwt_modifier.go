@@ -10,7 +10,6 @@ import (
 	"github.com/google/martian/v3/log"
 	"github.com/google/martian/v3/parse"
 	"github.com/google/martian/v3/proxyutil"
-	"github.com/pkg/errors"
 	"gopkg.in/square/go-jose.v2/jwt"
 )
 
@@ -43,7 +42,8 @@ func (m *jwtClaimModifier) ModifyRequest(req *http.Request) error {
 	claims, err := parseAuthorization(header)
 
 	if err != nil {
-		return errors.Errorf("header: jwtClaimModifier.ModifyRequest %s, error: %v", req.URL, err.Error())
+		log.Debugf("header: jwtClaimModifier.ModifyRequest %s, error: %v", req.URL, err.Error())
+		return nil
 	}
 
 	h.Set(m.header, fmt.Sprintf("%v", claims[m.claim]))
