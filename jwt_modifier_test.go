@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/google/martian/v3/log"
+	"github.com/google/martian/log"
 )
 
 func TestJwtClaimModifier(t *testing.T) {

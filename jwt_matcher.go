@@ -7,8 +7,8 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/google/martian/v3/log"
-	"github.com/google/martian/v3/proxyutil"
+	"github.com/google/martian/log"
+	"github.com/google/martian/proxyutil"
 )
 
 // Matcher is a conditonal evalutor of request or

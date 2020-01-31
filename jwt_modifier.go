@@ -6,10 +6,10 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/google/martian/v3"
-	"github.com/google/martian/v3/log"
-	"github.com/google/martian/v3/parse"
-	"github.com/google/martian/v3/proxyutil"
+	"github.com/google/martian"
+	"github.com/google/martian/log"
+	"github.com/google/martian/parse"
+	"github.com/google/martian/proxyutil"
 	"gopkg.in/square/go-jose.v2/jwt"
 )
 
