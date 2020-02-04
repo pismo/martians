@@ -90,8 +90,12 @@ func match(resource string, value string, rawurl string) error {
 		}
 
 		uriValue := string(uri[pos[2]:pos[3]])
-
+		uriResource := string(uri[pos[0]:pos[1]])
 		uri = uri[pos[3]:]
+
+		if uriResource != resource {
+			continue
+		}
 
 		if uriValue != value {
 			return fmt.Errorf("resource(%s) id mismatch, uri: %s, jwt claim: %s", resource, uriValue, value)
