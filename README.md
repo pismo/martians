@@ -25,6 +25,7 @@ The `jwt.Verifier` checks whether a JWT Claim matches a URI resource.
 
 Example configuration that validates if the `customer_id` claim contenat matches a REST resource ID in the URI. For instance, the bellow configuration would match if the URI contains `/customers/10` and the JWT has a Claim `customer_id=10`:
 
+```
 {
    "jwt.Verifier": {
      "scope": ["request"],
@@ -32,4 +33,4 @@ Example configuration that validates if the `customer_id` claim contenat matches
 		 "resource": "customers"
    }
  }
- 
+ ```
